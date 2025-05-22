@@ -1,0 +1,23 @@
+imctools: IMC file conversion tool to convert raw data MCD files into TIFF files
+    https://bodenmillergroup.github.io/imctools/
+
+
+
+
+
+1. Data Conversion
+    - Convert MCD files to TIFF files with imctools
+2. Preprocessing
+    - Remove blanks (see message)
+    - Normalize images
+    - Denoise or filter images as needed
+3. Spatial Windowing/Regional Analysis
+    - sliding window approach
+    - extract marker intensities and summary statistics 
+      (mean, variance, correlation) per window 
+4. Feature Extraction
+    - compute window-level features: marker correlations,
+      co-expression patterns, texture features
+5. Spatial Analysis
+    - Analyze spatial patterns, gradients, or regional heterogeneity
+    - cluster window-level features 
