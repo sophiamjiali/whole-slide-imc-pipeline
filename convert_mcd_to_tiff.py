@@ -1,5 +1,5 @@
 """
-Script:          convert_mcd_to_tiff.py
+Script:          mcd_to_tiff.py
 Purpose:         Converts MCD files to TIFF format.
 Author:          Sophia Li
 Affiliation:     Campbell Lab
