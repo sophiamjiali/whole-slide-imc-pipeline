@@ -1,23 +1,55 @@
 imctools: IMC file conversion tool to convert raw data MCD files into TIFF files
     https://bodenmillergroup.github.io/imctools/
 
+tifffile: Conversion tool for NumPy arrays and TIFF files
+    https://pypi.org/project/tifffile/
+
+
+Whole-slide IMC Pipeline:
+    - image acquisition, spillover correction already performed
+    - normalization: normalize to zero to one, not archsinh
+    - basic feature extraction: extract marker intensities from each pixel
+    - calculate correlations across whole slide, compare to TMA-IMC
+    - extract marker intensities from each pixel for whole slide
+    - sliding window: train CNN for feature extraction in each window
+    - cluster windows as unit of analysis
+    - find centroid of each cluster, then compare to TMA-IMC
+
+    Notes:
+        - find a way to convert into annData, then use scanpy for processing
+
+TMA-IMC Pipeline:
+    1. image aqcuisition
+    2. spillover correction: marker showing up in multiple channels
+        - pretty linear; given spillover matrix (use catalyst package)
+    3. segmentation: identify cells in the image
+    4. normalize: arcsinh, winsorization
+    4. feature extraction: extract marker intensities from each cell
+        - per cell marker intensities
+    5. clustering: cluster cells based on marker intensities
+
+- adapting CNN to IMC, usually takes three channels
+    - pytorch/pytorch-lightning: see documentation
 
 
 
 
-1. Data Conversion
-    - Convert MCD files to TIFF files with imctools
-2. Preprocessing
-    - Remove blanks (see message)
-    - Normalize images
-    - Denoise or filter images as needed
-3. Spatial Windowing/Regional Analysis
-    - sliding window approach
-    - extract marker intensities and summary statistics 
-      (mean, variance, correlation) per window 
-4. Feature Extraction
-    - compute window-level features: marker correlations,
-      co-expression patterns, texture features
-5. Spatial Analysis
-    - Analyze spatial patterns, gradients, or regional heterogeneity
-    - cluster window-level features 
+1. convert MCD files to TIFF files using imctools
+2. read TIFF as a numpy array using tifffile
+3. Feature Extraction:
+    - extract (cells x proteins) from mask and image
+    - omit background label
+    - annotate with marker and cell names
+3. Preprocessing:
+    - remove blanks (see message)
+    - normalize expression (arcsinh not applicable?)
+    - calculate quality metrics:
+        - filter cells with too few detected markers
+        - filter markers detected in too few cells
+        - filter clels with extreme total counts by quantile
+4. Cluster Cells:
+    - reduce dimensionality via PCA
+    - construct a neighbourhood graph
+    - cluster via leiden algorithm
+    - ...
+

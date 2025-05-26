@@ -1,7 +1,15 @@
+"""
+Script:          preprocessing.py
+Purpose:         Preprocesses WS-IMC image data for downstream analysis
+Author:          Sophia Li
+Affiliation:     Campbell Lab
+Date:            05-26-2025
+"""
+
+import tifffile as tf
 import numpy as np
-import imctools
-import tifffile
-import os
+import pandas as pd
+import scanpy as sc
 
 def load_imc_tiff(filepath):
 
