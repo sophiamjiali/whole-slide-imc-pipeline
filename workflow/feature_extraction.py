@@ -5,3 +5,5 @@ Author:          Sophia Li
 Affiliation:     Campbell Lab
 Date:            05-26-2025
 """
+
+# CNN for feature extraction on pixel-level data within sliding windows
