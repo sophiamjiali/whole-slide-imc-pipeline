@@ -9,8 +9,8 @@ Whole-slide IMC Pipeline:
     - image acquisition, spillover correction already performed
     - normalization: normalize to zero to one, not archsinh
     - basic feature extraction: extract marker intensities from each pixel
-    - calculate correlations across whole slide, compare to TMA-IMC
-    - extract marker intensities from each pixel for whole slide
+        - calculate correlations across whole slide, compare to TMA-IMC
+        - extract marker intensities from each pixel for whole slide
     - sliding window: train CNN for feature extraction in each window
     - cluster windows as unit of analysis
     - find centroid of each cluster, then compare to TMA-IMC
