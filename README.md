@@ -6,7 +6,7 @@ Completed on behalf of Campbell Lab at the Lunenfeld-Tanenbaum Research Institut
 
 ## Table of Contents
 - [Project Overview](#project-overview)
-- [Workflow]()
+- [Workflow](#workflow)
 
 
 ## Project Overview
