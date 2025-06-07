@@ -5,6 +5,47 @@ tifffile: Conversion tool for NumPy arrays and TIFF files
     https://pypi.org/project/tifffile/
 
 
+Model notes:
+    - train a model based on ResNet backbone
+    - use SimCLR contrastive learning framework
+    - use sliding window approach to extract patches from whole-slide images
+    - fine-tune on 1% of the labels to improve performance
+
+    - use PyTorch first to learn, then adapt to PyTorch Lightning
+
+
+
+
+Pre-Acquisition:
+    - spillover correction already performed
+    - blank acquisition already removed
+
+Pre-processing:
+    - initialize pixel-level mask for each channel
+    - extract pixel-level intensities from each pixel per channel
+    - normalize each channel individually via winsorization and min-max scaling
+    - initialize an AnnData object
+        - basic preprocessing: quality control, filtering, ...
+
+CNN Training:
+    - preprocess images, then extract patches via sliding window
+    - train CNN on patches
+        - use pre-trained model as backbone: ResNet
+            - ResNet: commonly used for IMC, easier to modify
+            - EfficientNet: better performance, but more complex
+            - consider transformer-based models later?
+        - use contrastive learning framework: SimCLR
+            - SimCLR: simple and effective, but resource-intensive
+            - MoCo: memory-efficient, but more complex
+    - fine-tune on 1% of the labels (improves performance significantly))
+    
+Post-processing:
+    - extract features from the trained CNN
+    - apply clustering algorithms to the feature maps
+        - e.g., K-means, DBSCAN, etc.
+
+
+
 Whole-slide IMC Pipeline:
     - image acquisition, spillover correction already performed
     - normalization: normalize to zero to one, not archsinh
@@ -30,26 +71,3 @@ TMA-IMC Pipeline:
 
 - adapting CNN to IMC, usually takes three channels
     - pytorch/pytorch-lightning: see documentation
-
-
-
-
-1. convert MCD files to TIFF files using imctools
-2. read TIFF as a numpy array using tifffile
-3. Feature Extraction:
-    - extract (cells x proteins) from mask and image
-    - omit background label
-    - annotate with marker and cell names
-3. Preprocessing:
-    - remove blanks (see message)
-    - normalize expression (arcsinh not applicable?)
-    - calculate quality metrics:
-        - filter cells with too few detected markers
-        - filter markers detected in too few cells
-        - filter clels with extreme total counts by quantile
-4. Cluster Cells:
-    - reduce dimensionality via PCA
-    - construct a neighbourhood graph
-    - cluster via leiden algorithm
-    - ...
-
